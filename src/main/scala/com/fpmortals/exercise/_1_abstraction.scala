@@ -2,11 +2,11 @@ package com.fpmortals.exercise
 
 import scala.concurrent.Future
 
-object part1 {
+import scalaz._
+import Scalaz._
 
-  /**
-    * Abstraction
-    */
+object _1_abstraction {
+
   object withoutGenericType {
 
     trait TerminalSync {
@@ -117,8 +117,6 @@ object part1 {
       * instead of defining a type Now[T] = T we can use this type alias Id[T] in scalaz
       * we can write sequential code with Monads
       */
-    import scalaz._
-    import Scalaz._
 
     sealed trait Terminal[C[_]] {
       def read(): C[String]
@@ -174,69 +172,6 @@ object part1 {
       override def read(): IO[String] = IO(io.StdIn.readLine())
       override def write(t: String): IO[Unit] = IO(println(t))
     }
-
-    /**
-      * The for-comprehension is the ideal FP abstraction for sequential programs that interact with the world
-      * For-comprehension is a syntax-sugar
-      * It defines a *Sequential programs*
-      * @example
-      *           val a, b, c = Option(1)
-      *           for { i <- a ; j <- b ; k <- c } yield (i + j + k)
-      *                       | | |
-      *                       | | |
-      *                       | | |
-      *                      \     /
-      *                       -----
-      *            a.flatMap {
-      *               i => b.flatMap {
-      *                 j => c.map {
-      *                   k => i + j + k }
-      *                   }
-      *                   }
-      *
-      * @example
-      *          for {
-      *              i <- a
-      *              j <- b
-      *              ij = i + j
-      *              k <- c
-      *            } yield (ij + k)
-      *                       | | |
-      *                       | | |
-      *                       | | |
-      *                      \     /
-      *                       -----
-      *           a.flatMap {
-      *               i => b.map {
-      *                 j => (j, i + j) }.flatMap {
-      *                   case (j, ij) => c.map {
-      *                   k => ij + k }
-      *                   }
-      *                   }
-      *
-      *  We cannot assign values before any generators `<-` 😔
-      *
-      *  If there is a condition:
-      *
-      *  @example
-      *
-      *           for {
-      *             i <-a
-      *             j <-b if i > j k <-c
-      *            } yield (i + j + k)
-      *                       | | |
-      *                       | | |
-      *                       | | |
-      *                      \     /
-      *                       -----
-      *            a.flatMap {
-      *               i => b.withFilter {
-      *                j => i > j }.flatMap {
-      *                 j => c.map {
-      *                  k => i + j + k }}}
-      *
-      * If there is no yield in for, the compiler will use foreach
-      */
   }
 
 }
