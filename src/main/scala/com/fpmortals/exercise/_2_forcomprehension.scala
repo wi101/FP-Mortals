@@ -13,64 +13,65 @@ object _2_forcomprehension {
     * It defines a *Sequential programs*
     *
     * @example
-    * val a, b, c = Option(1)
-    * for { i <- a ; j <- b ; k <- c } yield (i + j + k)
-    * | | |
-    * | | |
-    * | | |
-    * \     /
-    * -----
+    *     val a, b, c = Option(1)
+    *     for { i <- a ; j <- b ; k <- c } yield (i + j + k)
+    *               | | |
+    *               | | |
+    *               | | |
+    *              \     /
+    *               -----
     *            a.flatMap {
-    * i => b.flatMap {
-    * j => c.map {
-    * k => i + j + k }
-    * }
-    * }
+    *               i => b.flatMap {
+    *                j => c.map {
+    *                 k => i + j + k }
+    *                }
+    *               }
     * @example
-    * for {
-    * i <- a
-    * j <- b
-    * ij = i + j
-    * k <- c
-    * } yield (ij + k)
-    * | | |
-    * | | |
-    * | | |
-    * \     /
-    * -----
-    *           a.flatMap {
-    * i => b.map {
-    * j => (j, i + j) }.flatMap {
-    * case (j, ij) => c.map {
-    * k => ij + k }
-    * }
-    * }
+    *     for {
+    *     i <- a
+    *     j <- b
+    *     ij = i + j
+    *     k <- c
+    *     } yield (ij + k)
+    *          | | |
+    *          | | |
+    *          | | |
+    *         \     /
+    *          -----
+    *       a.flatMap {
+    *         i => b.map {
+    *           j => (j, i + j) }.flatMap {
+    *             case (j, ij) => c.map {
+    *                k => ij + k }
+    *             }
+    *         }
     *
     * We cannot assign values before any generators `<-` 😔
     *
     * If there is a condition:
-    * @example
+    *           @example
     *
-    * for {
-    * i <-a
-    * j <-b if i > j k <-c
-    * } yield (i + j + k)
-    * | | |
-    * | | |
-    * | | |
-    * \     /
-    * -----
-    *            a.flatMap {
-    * i => b.withFilter {
-    * j => i > j }.flatMap {
-    * j => c.map {
-    * k => i + j + k }}}
+    *           for {
+    *           i <-a
+    *           j <-b if i > j k <-c
+    *           } yield (i + j + k)
+    *                | | |
+    *                | | |
+    *                | | |
+    *               \     /
+    *                -----
+    *           a.flatMap {
+    *             i => b.withFilter {
+    *               j => i > j }.flatMap {
+    *                 j => c.map {
+    *                   k => i + j + k }}}
     *
     * If there is no yield in for, the compiler will use foreach
     *
-    * For-comprehension compute all computations in yield only if all actions are defined
-    * but it doesn't tell us what went wrong
+    *  For-comprehension compute all computations in yield only if all actions are defined
+    *  but it doesn't tell us what went wrong
     */
+
   /**
     * If we want to call other method in case the first one is failed inside the for-comprehension
     * we can provide this structure
