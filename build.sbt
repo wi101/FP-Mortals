@@ -10,5 +10,8 @@ scalacOptions in ThisBuild ++= Seq(
 )
 libraryDependencies ++= Seq(
   "com.github.mpilquist" %% "simulacrum" % "0.13.0",
-  "org.scalaz"           %% "scalaz-core" % "7.2.26"
+  "org.scalaz"           %% "scalaz-core" % "7.2.26",
+  "com.propensive"        %% "contextual" % "1.1.0",
+  "org.scalatest"         %% "scalatest"  % "3.0.5" % Test
+
 )
